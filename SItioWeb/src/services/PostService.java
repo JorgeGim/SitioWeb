@@ -78,6 +78,7 @@ public class PostService {
     public synchronized void delete(Post value) {
         posts.remove(value.getId());
         pdao.eliminar(value);
+        pdao.eliminar(value);
     }
     
     public synchronized void save(Post entry) {
