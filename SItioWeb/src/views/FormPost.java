@@ -2,6 +2,8 @@ package views;
 
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.event.FieldEvents.TextChangeEvent;
+import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -9,10 +11,12 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.AbstractTextField.TextChangeEventMode;
 import com.vaadin.ui.themes.ValoTheme;
 
 import daos.PostDAO;
@@ -32,7 +36,7 @@ public class FormPost extends FormLayout implements ClickListener {
 
     Button publicar = new Button("Publicar", this);
     Button cancelar = new Button("Cancelar", this);
-    TextArea contenido = new TextArea("contenido");
+    TextArea contenido = new TextArea("Contenido:");
     InicioView ui;
     PostService service;
     Usuario usr;
@@ -46,7 +50,31 @@ public class FormPost extends FormLayout implements ClickListener {
     	usr = ui.usr;
         configureComponents();
         buildLayout();
+        
+        configPost();
     }
+
+	private void configPost() {
+		contenido.setMaxLength(40);
+        final Label contCaracteres = new Label();
+        contCaracteres.setValue(contenido.getValue().length() + " de " + contenido.getMaxLength());
+        
+        contenido.addTextChangeListener(new TextChangeListener(){
+
+			@Override
+			public void textChange(TextChangeEvent event) {
+				
+				int len = event.getText().length();
+				contCaracteres.setValue(len + " de " + contenido.getMaxLength());
+				
+			}
+        	
+        });
+        
+        contenido.setTextChangeEventMode(TextChangeEventMode.LAZY);
+        
+        addComponent(contCaracteres);
+	}
 
     private void configureComponents() {
 
