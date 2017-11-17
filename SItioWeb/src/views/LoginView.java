@@ -15,6 +15,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Link;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
@@ -105,6 +106,8 @@ public class LoginView extends VerticalLayout implements View {
 		HorizontalLayout actions = new HorizontalLayout(bttInicSesion, bttRegistrarse);
 		actions.setSpacing(true);
 		formLogin.addComponent(actions);
+		
+		
 		
 		addStyleName("fondoPantalla");
 		panel.addStyleName("fondoPanel");
