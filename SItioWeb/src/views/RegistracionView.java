@@ -1,5 +1,7 @@
 package views;
 
+import services.UsuarioService;
+
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
@@ -34,7 +36,7 @@ public class RegistracionView extends VerticalLayout implements View{
 	 */
 	private static final long serialVersionUID = 1L;
 	public static final String NAME = "Registracion";
-	UsuarioDAO udao;
+//	UsuarioDAO udao;
 	TextField username;
 	TextField email;
 	PasswordField password;
@@ -43,7 +45,7 @@ public class RegistracionView extends VerticalLayout implements View{
     @SuppressWarnings("serial")
 	public RegistracionView() {
         
-    	udao = new UsuarioDAO();
+//    	udao = new UsuarioDAO();
     	
     	Panel panel = new Panel("Bienvenido!, por favor complete los siguientes datos");
 		panel.setSizeUndefined();
@@ -82,13 +84,16 @@ public class RegistracionView extends VerticalLayout implements View{
 			@Override
 			public void buttonClick(ClickEvent event) {
 				
-				Usuario nuevo = new Usuario();
-				nuevo.setUserName(username.getValue());
-				nuevo.setE_mail(email.getValue());
-				nuevo.setPassword(password.getValue());
-				nuevo.setCUIT_CUIL(cuil.getValue());
+				Usuario nuevoUsuario = UsuarioService.crearUsuario(cuil.getValue(), username.getValue(), email.getValue(), password.getValue());
+				UsuarioService.save(nuevoUsuario);
 				
-				udao.guardar(nuevo);
+//				Usuario nuevo = new Usuario();
+//				nuevo.setUserName(username.getValue());
+//				nuevo.setE_mail(email.getValue());
+//				nuevo.setPassword(password.getValue());
+//				nuevo.setCUIT_CUIL(cuil.getValue());
+				
+//				udao.guardar(nuevo);
 				
 				String notificacion = "Registrado con éxito!";
                 Notification.show(notificacion);

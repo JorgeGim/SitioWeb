@@ -34,5 +34,5 @@ public abstract class DAO<T> {
 		entityManager.close();
 	}
 	
-	abstract public List<T> traer();
+	public abstract List<T> traer();
 }

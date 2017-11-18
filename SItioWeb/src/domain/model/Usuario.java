@@ -38,10 +38,11 @@ public class Usuario implements Serializable, Cloneable{
 		
 	}
 	
-	public Usuario(String CUIL, String userName, String e_mail){
+	public Usuario(String CUIL, String userName, String e_mail, String pass){
 		this.CUIT_CUIL = CUIL;
 		this.userName = userName;
 		this.e_mail = e_mail;
+		this.password = pass;
 	}
 
 	public String getPassword() {

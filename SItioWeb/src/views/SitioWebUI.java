@@ -1,7 +1,5 @@
 package views;
 
-import java.util.Calendar;
-
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
@@ -13,6 +11,7 @@ import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 
 
+@SuppressWarnings("serial")
 @Title("Addressbook")
 @Theme("clase_vaadin")
 public class SitioWebUI extends UI {
