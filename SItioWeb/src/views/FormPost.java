@@ -32,6 +32,7 @@ import services.PostService;
  * Similarly named field by naming convention or customized
  * with @PropertyId annotation.
  */
+@SuppressWarnings("serial")
 public class FormPost extends FormLayout implements ClickListener {
 
     Button publicar = new Button("Publicar", this);

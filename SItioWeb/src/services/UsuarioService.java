@@ -25,7 +25,6 @@ public class UsuarioService {
 			 
 			 final UsuarioService usuarioService = new UsuarioService();
 			 
-			 
 			 List<Usuario> listaUsuarios = UsuarioDAO.traer();
 			 
 			 for(Usuario usuario : listaUsuarios)

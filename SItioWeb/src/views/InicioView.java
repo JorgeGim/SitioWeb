@@ -18,6 +18,7 @@ import com.vaadin.ui.Button.ClickListener;
 import domain.model.Post;
 import domain.model.Usuario;
 
+@SuppressWarnings("serial")
 public class InicioView extends HorizontalLayout implements View{
 	
 	protected static final String NAME = "inicio";
