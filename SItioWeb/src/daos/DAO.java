@@ -10,7 +10,7 @@ public abstract class DAO<T> {
 	protected static EntityManagerFactory entityManagerFactory = 
 	Persistence.createEntityManagerFactory("org.hibernate.tutorial.jpa");
 
-	public void guardar(T t){
+	public static <T> void guardar(T t){
 	
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
@@ -23,7 +23,7 @@ public abstract class DAO<T> {
 		System.out.println("Guardado");
 	}
 	
-	public void eliminar(T t){
+	public static <T> void eliminar(T t){
 		
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
@@ -33,6 +33,4 @@ public abstract class DAO<T> {
 		entityManager.getTransaction().commit();
 		entityManager.close();
 	}
-	
-	public abstract List<T> traer();
 }

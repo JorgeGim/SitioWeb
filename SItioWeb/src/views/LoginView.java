@@ -29,13 +29,11 @@ public class LoginView extends VerticalLayout implements View {
 	
 	TextField username;
 	PasswordField password;
-	UsuarioDAO udao;
 	
 	
 	@SuppressWarnings("serial")
 	public LoginView()
 	{
-		udao = new UsuarioDAO();
 		
 		Panel panel = new Panel("Bienvenido!");
 		panel.setSizeUndefined();
@@ -62,8 +60,7 @@ public class LoginView extends VerticalLayout implements View {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				
-				System.out.println("entro");
-				Usuario nuevo = udao.buscar(username.getValue());
+				Usuario nuevo = UsuarioDAO.buscar(username.getValue());
 				
 				if(nuevo!=null){
 					

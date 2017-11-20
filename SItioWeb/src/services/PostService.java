@@ -20,16 +20,20 @@ public class PostService {
 
 	private HashMap<Long, Post> posts;
     private long nextId;
-	private PostDAO pdao;
-	
-	
-	public PostService(){
 		
-		pdao = new PostDAO();
+	public PostService(){
+
+		refreshPosts();
+	}
+	
+	public void refreshPosts(){
+		
 		posts = new HashMap<Long, Post>();
 		nextId = 0;
 		
-		for(Post p : uploadPosts()){
+		List<Post> listaPosts =  PostDAO.traer();
+		
+		for(Post p : listaPosts){
 			
 			posts.put(p.getId(), p);
 			
@@ -37,16 +41,13 @@ public class PostService {
 		}
 	}
 	
-	public List<Post> uploadPosts(){
-
-		List<Post> listaPosts =  pdao.traer();
-		 
-		 return listaPosts;
-	}
-	
     
-    public synchronized List<Post> findAll(String stringFilter) {
+    public List<Post> findAll(String stringFilter) {
+    	
+    	refreshPosts();
+    	
         ArrayList<Post> arrayList = new ArrayList<>();
+        
         for (Post post : posts.values()) {
             try {
                 boolean passesFilter = (stringFilter == null || stringFilter
@@ -71,17 +72,17 @@ public class PostService {
         return arrayList;
     }
     
-    public synchronized long count() {
+    public long count() {
         return posts.size();
     }
     
-    public synchronized void delete(Post value) {
+    public void delete(Post value) {
         posts.remove(value.getId());
-        pdao.eliminar(value);
-        pdao.eliminar(value);
+        PostDAO.eliminar(value);
+        PostDAO.eliminar(value);
     }
     
-    public synchronized void save(Post entry) {
+    public void save(Post entry) {
         if (entry.getId() == null) {
             entry.setId(nextId++);
         }
@@ -93,7 +94,7 @@ public class PostService {
         posts.put(entry.getId(), entry);
     }
     
-    public synchronized void createPost(Usuario usr, String cont){
+    public void createPost(Usuario usr, String cont){
     	
     	Post post = new Post();
     	post.setUsuario(usr);
@@ -103,12 +104,12 @@ public class PostService {
     	
     	usr.addPost(post);
     	
-    	pdao.guardar(post);
+    	PostDAO.guardar(post);
     	
      	save(post);
     }
     
-    public synchronized void suprPost(Usuario usr, Post post){
+    public void suprPost(Usuario usr, Post post){
     	
     	//if(usr.getUserName().equals(post.getUsr().getUserName())){
     		

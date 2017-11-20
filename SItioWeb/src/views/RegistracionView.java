@@ -36,7 +36,7 @@ public class RegistracionView extends VerticalLayout implements View{
 	 */
 	private static final long serialVersionUID = 1L;
 	public static final String NAME = "Registracion";
-//	UsuarioDAO udao;
+	UsuarioService service;
 	TextField username;
 	TextField email;
 	PasswordField password;
@@ -45,7 +45,7 @@ public class RegistracionView extends VerticalLayout implements View{
     @SuppressWarnings("serial")
 	public RegistracionView() {
         
-//    	udao = new UsuarioDAO();
+    	service = new UsuarioService();
     	
     	Panel panel = new Panel("Bienvenido!, por favor complete los siguientes datos");
 		panel.setSizeUndefined();
@@ -84,16 +84,7 @@ public class RegistracionView extends VerticalLayout implements View{
 			@Override
 			public void buttonClick(ClickEvent event) {
 				
-				Usuario nuevoUsuario = UsuarioService.crearUsuario(cuil.getValue(), username.getValue(), email.getValue(), password.getValue());
-				UsuarioService.save(nuevoUsuario);
-				
-//				Usuario nuevo = new Usuario();
-//				nuevo.setUserName(username.getValue());
-//				nuevo.setE_mail(email.getValue());
-//				nuevo.setPassword(password.getValue());
-//				nuevo.setCUIT_CUIL(cuil.getValue());
-				
-//				udao.guardar(nuevo);
+				service.crearUsuario(cuil.getValue(), username.getValue(), email.getValue(), password.getValue());
 				
 				String notificacion = "Registrado con éxito!";
                 Notification.show(notificacion);

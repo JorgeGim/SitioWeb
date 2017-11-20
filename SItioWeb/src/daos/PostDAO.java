@@ -7,8 +7,8 @@ import javax.persistence.EntityManager;
 import domain.model.Post;
 
 public class PostDAO extends DAO<Post>{
-	@Override
-	public List<Post> traer() {
+
+	public static List<Post> traer() {
 		
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
