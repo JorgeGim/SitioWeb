@@ -27,7 +27,7 @@ public class Usuario implements Serializable, Cloneable{
 	private int prestigio;
 	private int puntos;
 	
-	@OneToMany(fetch = FetchType.EAGER,mappedBy = "usr", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER,mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Post> posts = new ArrayList<Post>();
 	
 	public List<Post> getPosts(){

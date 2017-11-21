@@ -23,14 +23,14 @@ public class Post implements Serializable, Cloneable
 	private String Contenido;
 	
 	@ManyToOne
-	private Usuario usr;
+	private Usuario usuario;
 	
-	public Usuario getUsr() {
-		return usr;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 	
 	public void setUsuario(Usuario usr) {
-		this.usr = usr;
+		this.usuario = usr;
 	}
 
 	public Date getFecha() {
@@ -68,7 +68,7 @@ public class Post implements Serializable, Cloneable
     
     @Override
     public String toString() {
-        return "Post{" + "id=" + id + ", userName=" + usr.getUserName()
+        return "Post{" + "id=" + id + ", userName=" + usuario.getUserName()
                 + ", fecha=" + fecha.toString() + ", Contenido=" + Contenido + '}';
     }
 }

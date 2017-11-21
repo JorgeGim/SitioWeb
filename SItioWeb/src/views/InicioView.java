@@ -1,5 +1,7 @@
 package views;
 
+import java.util.ArrayList;
+
 import services.PostService;
 
 import com.vaadin.data.util.BeanItemContainer;
@@ -29,10 +31,14 @@ public class InicioView extends HorizontalLayout implements View{
 	 Usuario usr;
 	 FormPost formPost;
 	 PostService service;
+	 
+	 ArrayList<PostView> posts;
 	
 	public InicioView(Usuario usr){
 		
 		this.usr = usr;
+		
+		posts = new ArrayList<>();
 		
 		filter = new TextField();
 		postsList = new Grid();
@@ -49,28 +55,28 @@ public class InicioView extends HorizontalLayout implements View{
 		this.usr = usr;
 	}
 	
-	   private void configureComponents() {
+	private void configureComponents() {
 
-	    	borrarPost.addClickListener(new ClickListener(){
+	    borrarPost.addClickListener(new ClickListener(){
 	    		
-	    		@Override
-	    		public void buttonClick(ClickEvent event){
+	    	@Override
+	    	public void buttonClick(ClickEvent event){
 	    			
-	    			service.suprPost(usr,(Post) postsList.getSelectedRow());   //borra un post si el usuario corresponde
-	    			refreshPosts();
-	    		}
-	    	});
+	    		service.suprPost(usr,(Post) postsList.getSelectedRow());   //borra un post si el usuario corresponde
+	    		refreshPosts();
+	    	}
+	    });
 	    	
-	        crearPost.addClickListener(new ClickListener() {
+	    crearPost.addClickListener(new ClickListener() {
 
-	            @Override
-	            public void buttonClick(ClickEvent event) {
-	                formPost.hacerVisible();
-	            }
-	        });
+	        @Override
+	        public void buttonClick(ClickEvent event) {
+	            formPost.hacerVisible();
+	        }
+	    });
 
-	        filter.setInputPrompt("Filter posts...");
-	        filter.addTextChangeListener(new TextChangeListener() {
+	    filter.setInputPrompt("Filter posts...");
+	    filter.addTextChangeListener(new TextChangeListener() {
 
 	            @Override
 	            public void textChange(TextChangeEvent event) {
@@ -80,6 +86,11 @@ public class InicioView extends HorizontalLayout implements View{
 
 	        postsList.setContainerDataSource(new BeanItemContainer<Post>(
 	                Post.class));
+	        
+	        for(Object s : postsList.getContainerDataSource().getItemIds()){
+	        	
+	        	System.out.println(s.toString());
+	        }
 	        
 	        //ESTO SERVIRIA PARA LA OPCION DE ESITAR UN POST
 //	        postsList.setSelectionMode(Grid.SelectionMode.SINGLE);
@@ -105,10 +116,18 @@ public class InicioView extends HorizontalLayout implements View{
 	        filter.setWidth("100%");
 	        actions.setExpandRatio(filter, 1);
 
-	        VerticalLayout left = new VerticalLayout(actions, postsList);
+	        VerticalLayout left = new VerticalLayout(actions);
+	       // postsList.setSizeFull();
+	        //left.setExpandRatio(postList,1);
+	        
+	        for(PostView view : posts){
+	        	
+	        	System.out.println("creo los posts");
+	        	
+	        	left.addComponent(view);
+	        }
+	        
 	        left.setSizeFull();
-	        postsList.setSizeFull();
-	        left.setExpandRatio(postsList, 1);
 	        
 	        this.addComponent(left);
 	        this.addComponent(formPost);
@@ -121,8 +140,18 @@ public class InicioView extends HorizontalLayout implements View{
 	    }
 
 	    private void refreshPosts(String stringFilter) {
-	        postsList.setContainerDataSource(new BeanItemContainer<Post>(
-	                Post.class, service.findAll(stringFilter)));
+//	        postsList.setContainerDataSource(new BeanItemContainer<Post>(
+//	                Post.class, service.findAll(stringFilter)));
+	    	
+	    	posts = new ArrayList<>();
+	    	
+	    	for(Post p : service.findAll(stringFilter)){
+	    		
+	    		PostView view = new PostView(p);
+	    		posts.add(view);
+	    		
+	    		System.out.println("entra");
+	    	}
 	        formPost.setVisible(false);
 	    }
 
@@ -135,5 +164,4 @@ public class InicioView extends HorizontalLayout implements View{
 		// TODO Auto-generated method stub
 		
 	}
-
 }
