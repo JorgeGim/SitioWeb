@@ -40,13 +40,13 @@ public class OlvidoContraseñaView extends VerticalLayout implements View {
 		email.setRequired(true);
 		formLogin.addComponent(email);
 		
-		Button enviarMail = new Button("Enviar email");
-		enviarMail.addClickListener(new ClickListener(){
+		Button bttEnviarMail = new Button("Enviar email");
+		bttEnviarMail.addClickListener(new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
 				
-				String destinatario [] = {"jorgehgimenez.1996@gmail.com"};
+				String destinatario [] = {email.getValue()};
 				boolean envioMail = EmailSenderService.sendEmail("jorgehgimenez.1996@gmail.com", "jo020396", "prueba", 
 						destinatario);
 				
@@ -56,10 +56,22 @@ public class OlvidoContraseñaView extends VerticalLayout implements View {
 			
 		});
 		
-		enviarMail.addStyleName(ValoTheme.BUTTON_FRIENDLY);
+		bttEnviarMail.addStyleName(ValoTheme.BUTTON_FRIENDLY);
+		
+		Button bttVolver = new Button("Volver");
+		bttVolver.addClickListener(new ClickListener(){
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				getUI().getNavigator().navigateTo(LoginView.NAME);
+				
+			}
+			
+		});
 		
 		formLogin.addComponent(email);
-		formLogin.addComponent(enviarMail);
+		formLogin.addComponent(bttEnviarMail);
+		formLogin.addComponent(bttVolver);
 		
 		formLogin.setSizeUndefined();
 		formLogin.setMargin(true);
