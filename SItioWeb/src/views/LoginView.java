@@ -97,7 +97,19 @@ public class LoginView extends VerticalLayout implements View {
 			}
 			
 		});	
+		
 		bttRegistrarse.addStyleName(ValoTheme.BUTTON_DANGER);
+		
+		Button bttOlvidoContraseña = new Button("No recuerdo la contraseña");
+		bttOlvidoContraseña.addClickListener(new ClickListener(){
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				getUI().getNavigator().navigateTo(OlvidoContraseñaView.NAME);
+				
+			}
+			
+		});
 	
 		
 		formLogin.setSizeUndefined();
@@ -105,7 +117,7 @@ public class LoginView extends VerticalLayout implements View {
 		panel.setContent(formLogin);
 		setComponentAlignment(panel, Alignment.MIDDLE_CENTER);
 		
-		HorizontalLayout actions = new HorizontalLayout(bttInicSesion, bttRegistrarse);
+		HorizontalLayout actions = new HorizontalLayout(bttInicSesion, bttRegistrarse, bttOlvidoContraseña);
 		actions.setSpacing(true);
 		formLogin.addComponent(actions);
 		

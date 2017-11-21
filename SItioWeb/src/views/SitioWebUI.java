@@ -26,6 +26,7 @@ public class SitioWebUI extends UI {
     	      
         navigator = new Navigator(this, this);
         navigator.addView(LoginView.NAME, log);
+        navigator.addView(OlvidoContraseñaView.NAME, new OlvidoContraseñaView());
         navigator.navigateTo("login");
     }
 
