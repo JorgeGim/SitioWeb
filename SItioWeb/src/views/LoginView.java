@@ -1,5 +1,7 @@
 package views;
 
+import services.UsuarioService;
+
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
@@ -9,12 +11,14 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import daos.UsuarioDAO;
+import domain.model.Espectador;
 import domain.model.Usuario;
 
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
@@ -29,11 +33,14 @@ public class LoginView extends VerticalLayout implements View {
 	
 	TextField username;
 	PasswordField password;
-	
+	UsuarioService service;
+	Espectador specter;
 	
 	@SuppressWarnings("serial")
 	public LoginView()
 	{
+		specter = new Espectador();
+		service = new UsuarioService(specter);
 		
 		Panel panel = new Panel("Bienvenido!");
 		panel.setSizeUndefined();
@@ -60,20 +67,20 @@ public class LoginView extends VerticalLayout implements View {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				
-				Usuario nuevo = UsuarioDAO.buscar(username.getValue());
+				Usuario usr = service.getUsuario(username.getValue(),password.getValue());
 				
-				if(nuevo!=null){
-					
-					if(nuevo.getPassword().equals(password.getValue())){
+				boolean flag = false;
 				
-						getUI().getNavigator().addView(InicioView.NAME, new InicioView(nuevo));
-						getUI().getNavigator().navigateTo(InicioView.NAME);
-					}
+				if(usr!=null){
+
+					getUI().getNavigator().addView(InicioView.NAME, new InicioView(usr));
 					
-					else System.out.println("Contraseña Incorrecta");
+					flag = true;
 				}
-				else System.out.println("Usuario incorrecto");
 				
+				Notification.show(specter.getInforme());
+				
+				if(flag) getUI().getNavigator().navigateTo(InicioView.NAME);
 			}
 			
 		});	
@@ -87,7 +94,6 @@ public class LoginView extends VerticalLayout implements View {
 			public void buttonClick(ClickEvent event) {
 				getUI().getNavigator().addView(RegistracionView.NAME, new RegistracionView());
 				getUI().getNavigator().navigateTo(RegistracionView.NAME);
-				
 			}
 			
 		});	

@@ -19,6 +19,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import daos.UsuarioDAO;
+import domain.model.Espectador;
 import domain.model.Usuario;
 
 /* Create custom UI Components.
@@ -36,16 +37,19 @@ public class RegistracionView extends VerticalLayout implements View{
 	 */
 	private static final long serialVersionUID = 1L;
 	public static final String NAME = "Registracion";
-	UsuarioService service;
+	
 	TextField username;
 	TextField email;
 	PasswordField password;
 	TextField cuil;
+	Espectador specter;
+	UsuarioService service;
 
     @SuppressWarnings("serial")
 	public RegistracionView() {
-        
-    	service = new UsuarioService();
+    	
+    	specter = new Espectador();
+    	service = new UsuarioService(specter);
     	
     	Panel panel = new Panel("Bienvenido!, por favor complete los siguientes datos");
 		panel.setSizeUndefined();
@@ -84,11 +88,14 @@ public class RegistracionView extends VerticalLayout implements View{
 			@Override
 			public void buttonClick(ClickEvent event) {
 				
-				service.crearUsuario(cuil.getValue(), username.getValue(), email.getValue(), password.getValue());
+				if(service.crearUsuario(cuil.getValue(),
+										username.getValue(),
+										email.getValue(),
+										password.getValue()))
+					
+						{getUI().getNavigator().navigateTo(LoginView.NAME);}	 
 				
-				String notificacion = "Registrado con éxito!";
-                Notification.show(notificacion);
-				getUI().getNavigator().navigateTo(LoginView.NAME);
+                Notification.show(specter.getInforme());
 			}
 			
 		});

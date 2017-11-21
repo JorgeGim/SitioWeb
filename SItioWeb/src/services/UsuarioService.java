@@ -1,14 +1,17 @@
 package services;
 
-import java.util.HashMap;
-import java.util.List;
-
-import org.apache.commons.beanutils.BeanUtils;
-
 import daos.UsuarioDAO;
+import domain.model.Espectador;
 import domain.model.Usuario;
 
 public class UsuarioService {
+	
+	Espectador specter;
+	
+	public UsuarioService(Espectador e){
+		
+		specter = e;
+	}
 	
 	public boolean crearUsuario(String cc, String nombre, String mail, String pass){
     	
@@ -17,11 +20,34 @@ public class UsuarioService {
     	return save(usuario);
     }
     
-    public static void delete(Usuario value) {
+    public void delete(Usuario value) {
        UsuarioDAO.eliminar(value);
     }
     
-    public static boolean save(Usuario entry) {
+    public Usuario getUsuario(String username,String contraseña){
+    	
+    	Usuario usr = UsuarioDAO.buscar(username);
+    	
+    	if(usr==null){
+    		
+    		specter.notificar("Usuario Inexistente");
+    		
+    		return null;
+    	}
+    	
+    	else if(!usr.getPassword().equals(contraseña)){
+    		
+    		specter.notificar("Contraseña Incorrecta");
+    		
+    		return null;
+    	}
+    	
+    	specter.notificar("Ingreso Exitoso");
+  
+    	return usr;
+    }
+    
+    public boolean save(Usuario entry) {
         
     	if(ChequearNombre(entry.getUserName())) {
     		
@@ -32,13 +58,13 @@ public class UsuarioService {
     	
     	else{
     		
-    		System.out.println("usuario ya existente!!");
-    		
+    		specter.notificar("Usuario Ya Existente!!");
+  
     		return false;
     	}
     }
     
-    private static boolean ChequearNombre(String userName) {
+    private boolean ChequearNombre(String userName) {
 
     	if(UsuarioDAO.buscar(userName)==null) return true;
     	
