@@ -118,4 +118,19 @@ public class PostService {
     //	}
     	//else System.out.println("Usuario incorrecto! - su Usuario es: "+ usr + " y el del post es: " + post.getUsr().toString());
     }
+
+	public void incrementarMeGusta(Post post) {
+		
+		int total = post.getCantMeGusta() + 1;
+		post.setCantMeGusta(total);
+		PostDAO.actualizarMeGustas(post, total);
+	}
+
+	public void incrementarNoMeGusta(Post post) {
+		
+		int total = post.getCantNoMeGusta() + 1;
+		post.setCantNoMeGusta(total);
+		PostDAO.actualizarNoMeGustas(post, total);
+		
+	}
 }

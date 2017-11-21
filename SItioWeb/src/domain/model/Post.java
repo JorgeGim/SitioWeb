@@ -21,7 +21,25 @@ public class Post implements Serializable, Cloneable
 	
 	private Date fecha;
 	private String Contenido;
+	private int cantMeGusta;
+	private int cantNoMeGusta;
 	
+	public int getCantMeGusta() {
+		return cantMeGusta;
+	}
+
+	public void setCantMeGusta(int cantMeGusta) {
+		this.cantMeGusta = cantMeGusta;
+	}
+
+	public int getCantNoMeGusta() {
+		return cantNoMeGusta;
+	}
+
+	public void setCantNoMeGusta(int cantNoMeGusta) {
+		this.cantNoMeGusta = cantNoMeGusta;
+	}
+
 	@ManyToOne
 	private Usuario usr;
 	

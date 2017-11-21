@@ -7,8 +7,7 @@ import javax.persistence.Persistence;
 
 public abstract class DAO<T> {
 	
-	protected static EntityManagerFactory entityManagerFactory = 
-	Persistence.createEntityManagerFactory("org.hibernate.tutorial.jpa");
+	protected static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("org.hibernate.tutorial.jpa");
 
 	public static <T> void guardar(T t){
 	

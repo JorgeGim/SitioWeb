@@ -21,24 +21,29 @@ import domain.model.Usuario;
 @SuppressWarnings("serial")
 public class InicioView extends HorizontalLayout implements View{
 	
-	protected static final String NAME = "inicio";
+	 protected static final String NAME = "inicio";
+	 
 	 TextField filter;
 	 Grid postsList;
 	 Button crearPost;
 	 Button borrarPost;
-	 Usuario usr;
+	 Button meGusta;
+	 Button noMeGusta;
+	 Usuario usuario;
 	 FormPost formPost;
-	 PostService service;
+	 PostService postService;
 	
 	public InicioView(Usuario usr){
 		
-		this.usr = usr;
+		this.usuario = usr;
 		
 		filter = new TextField();
 		postsList = new Grid();
 		crearPost = new Button("Crear Post");
 		borrarPost = new Button("Borrar Post");
-		service = new PostService();
+		meGusta = new Button("Me gusta");
+		noMeGusta = new Button("No me gusta");
+		postService = new PostService();
 		formPost = new FormPost(this);
 		configureComponents();
         buildLayout();
@@ -46,7 +51,7 @@ public class InicioView extends HorizontalLayout implements View{
 	
 	public void insertUsuario(Usuario usr){
 		
-		this.usr = usr;
+		this.usuario = usr;
 	}
 	
 	   private void configureComponents() {
@@ -56,7 +61,7 @@ public class InicioView extends HorizontalLayout implements View{
 	    		@Override
 	    		public void buttonClick(ClickEvent event){
 	    			
-	    			service.suprPost(usr,(Post) postsList.getSelectedRow());   //borra un post si el usuario corresponde
+	    			postService.suprPost(usuario,(Post) postsList.getSelectedRow());   //borra un post si el usuario corresponde
 	    			refreshPosts();
 	    		}
 	    	});
@@ -68,6 +73,28 @@ public class InicioView extends HorizontalLayout implements View{
 	                formPost.hacerVisible();
 	            }
 	        });
+	        
+	        meGusta.addClickListener(new ClickListener(){
+
+				@Override
+				public void buttonClick(ClickEvent event) {
+					postService.incrementarMeGusta((Post) postsList.getSelectedRow());
+					refreshPosts();
+				}
+	        	
+	        });
+	        
+	        noMeGusta.addClickListener(new ClickListener(){
+
+				@Override
+				public void buttonClick(ClickEvent event) {
+					postService.incrementarNoMeGusta((Post) postsList.getSelectedRow());
+					refreshPosts();
+					
+				}
+	        	
+	        });
+	      
 
 	        filter.setInputPrompt("Filter posts...");
 	        filter.addTextChangeListener(new TextChangeListener() {
@@ -100,7 +127,7 @@ public class InicioView extends HorizontalLayout implements View{
 
 	    private void buildLayout() {
 	    	
-	        HorizontalLayout actions = new HorizontalLayout(filter, crearPost, borrarPost);
+	        HorizontalLayout actions = new HorizontalLayout(filter, crearPost, borrarPost, meGusta, noMeGusta);
 	        actions.setWidth("100%");
 	        filter.setWidth("100%");
 	        actions.setExpandRatio(filter, 1);
@@ -122,13 +149,13 @@ public class InicioView extends HorizontalLayout implements View{
 
 	    private void refreshPosts(String stringFilter) {
 	        postsList.setContainerDataSource(new BeanItemContainer<Post>(
-	                Post.class, service.findAll(stringFilter)));
+	                Post.class, postService.findAll(stringFilter)));
 	        formPost.setVisible(false);
 	    }
 
 	    
 	    PostService getService(){
-	    	return service;
+	    	return postService;
 	    }
 	@Override
 	public void enter(ViewChangeEvent event) {

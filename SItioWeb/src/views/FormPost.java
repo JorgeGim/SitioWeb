@@ -47,8 +47,8 @@ public class FormPost extends FormLayout implements ClickListener {
     public FormPost(InicioView ui) {
     	
     	this.ui = ui;
-    	service = ui.service;
-    	usr = ui.usr;
+    	service = ui.postService;
+    	usr = ui.usuario;
         configureComponents();
         buildLayout();
         
