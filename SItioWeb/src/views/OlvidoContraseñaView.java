@@ -15,6 +15,9 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+
+import daos.UsuarioDAO;
+import domain.model.Usuario;
 import services.EmailSenderService;
 
 public class OlvidoContraseñaView extends VerticalLayout implements View {
@@ -32,6 +35,7 @@ public class OlvidoContraseñaView extends VerticalLayout implements View {
 		panel.setSizeUndefined();
 		addComponent(panel);
 		setSizeFull();
+		addStyleName("fondoOlvidoContraseña");
 		
 		FormLayout formLogin = new FormLayout();
 		
@@ -46,8 +50,16 @@ public class OlvidoContraseñaView extends VerticalLayout implements View {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				
+				Usuario usuario = UsuarioDAO.buscarPorEmail(email.getValue());
+				String contraseña = usuario.getPassword();
+				
 				String destinatario [] = {email.getValue()};
-				boolean envioMail = EmailSenderService.sendEmail("jorgehgimenez.1996@gmail.com", "jo020396", "prueba", 
+				
+				String mensaje = "Estimado "+ usuario.getUserName()+"," + " ha solicitado recuperar su contraseña vía email." + "\n" + "\n" 
+				+ "Contraseña: " + contraseña + "\n" + "\n" + "Saludos, el equipo de SitioWebPosts" + "\n" + "\n" + "-----------------------"+ "\n" +
+				"Por favor, no responda este mensaje.";
+				
+				boolean envioMail = EmailSenderService.sendEmail("sitiowebposts@gmail.com", "sitio123", mensaje, 
 						destinatario);
 				
 				if(envioMail){
@@ -59,7 +71,7 @@ public class OlvidoContraseñaView extends VerticalLayout implements View {
 			
 		});
 		
-		bttEnviarMail.addStyleName(ValoTheme.BUTTON_FRIENDLY);
+		bttEnviarMail.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		
 		Button bttVolver = new Button("Volver");
 		bttVolver.addClickListener(new ClickListener(){
@@ -72,6 +84,8 @@ public class OlvidoContraseñaView extends VerticalLayout implements View {
 			
 		});
 		
+		bttVolver.addStyleName(ValoTheme.BUTTON_FRIENDLY);
+		
 		formLogin.addComponent(email);
 		formLogin.addComponent(bttEnviarMail);
 		formLogin.addComponent(bttVolver);
@@ -79,27 +93,12 @@ public class OlvidoContraseñaView extends VerticalLayout implements View {
 		formLogin.setSizeUndefined();
 		formLogin.setMargin(true);
 		panel.setContent(formLogin);
-		setComponentAlignment(panel, Alignment.MIDDLE_CENTER);
-		
-		
+		setComponentAlignment(panel, Alignment.MIDDLE_CENTER);		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	@Override
 	public void enter(ViewChangeEvent event) {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
-
 }

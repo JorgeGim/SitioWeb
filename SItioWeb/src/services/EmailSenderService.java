@@ -39,7 +39,7 @@ public class EmailSenderService {
 				mimeMessage.addRecipient(RecipientType.TO, toAddress[i]);
 			}
 			//add a subject
-			mimeMessage.setSubject("mail using javamail api");
+			mimeMessage.setSubject("Recuperación de contraseña");
 			//set message to mimeMessage
 			mimeMessage.setText(message);
 			

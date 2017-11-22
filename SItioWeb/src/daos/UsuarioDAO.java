@@ -27,5 +27,27 @@ public class UsuarioDAO extends DAO<Usuario> {
 		
 		return result;
 	}
+	
+	public static Usuario buscarPorEmail(String email){
+		
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		
+		Usuario result;
+		
+		try{
+			
+			result = entityManager.createQuery("from Usuario u where u.e_mail = '"+email+"'",Usuario.class).getSingleResult(); 
+		}
+		catch(javax.persistence.NoResultException e){
+			
+			result = null;
+		}
+		
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		
+		return result;
+	}
 
 }

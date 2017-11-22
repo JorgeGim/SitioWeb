@@ -78,10 +78,6 @@ public class RegistracionView extends VerticalLayout implements View{
 		cuil.setRequired(true);
 		formLogin.addComponent(cuil);
 		
-		TextField facebook = new TextField("Conectar con Facebook:");
-		facebook.setIcon(FontAwesome.FACEBOOK);
-		formLogin.addComponent(facebook);
-		
 		Button bttRegistrarse = new Button("Registrarse");
 		bttRegistrarse.addClickListener(new ClickListener(){
 			
