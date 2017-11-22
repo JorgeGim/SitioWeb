@@ -50,8 +50,11 @@ public class OlvidoContraseñaView extends VerticalLayout implements View {
 				boolean envioMail = EmailSenderService.sendEmail("jorgehgimenez.1996@gmail.com", "jo020396", "prueba", 
 						destinatario);
 				
-				if(envioMail)
+				if(envioMail){
 					Notification.show("Email enviado correctamente");
+					getUI().getNavigator().navigateTo(LoginView.NAME);
+				}
+					
 			}
 			
 		});
