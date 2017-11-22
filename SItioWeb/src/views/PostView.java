@@ -1,46 +1,70 @@
 package views;
 
+import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 import domain.model.Post;
 
-public class PostView extends HorizontalLayout{
+public class PostView {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	TextField contenido;
-	TextField fecha;
-	TextField usuario;
+	
+	Post post;
+	
+	Label contenido;
+	Label fecha;
+	Label usuario;
+	
+	public Panel principal;
+	
 	VerticalLayout encuadre;
 	HorizontalLayout encabezado;
 	HorizontalLayout postContainer;
 	HorizontalLayout botones;
-	Post post;
 	
 	public PostView(Post p){
 	
 		post = p;
 		
-		contenido = new TextField(p.getContenido());
+		contenido = new Label(p.getContenido());
 		
-//		contenido.setWidth("300px");
-//		contenido.setHeight("100px");
-		fecha = new TextField(p.getFecha().toString());
-//		fecha.setWidth("100px");
-		usuario = new TextField(p.getUsuario().getUserName());
-//		usuario.setWidth("100px");
-		
+		fecha = new Label(p.getFecha().toString());
+
+		usuario = new Label(p.getUsuario().getUserName());
 		
 		encabezado = new HorizontalLayout(usuario,fecha);
-		postContainer = new HorizontalLayout(contenido);
-		botones = new HorizontalLayout();
+		encabezado.setSizeFull();
+		encabezado.setComponentAlignment(fecha, Alignment.TOP_RIGHT);
 		
-		encuadre = new VerticalLayout(encabezado,postContainer,botones);
+		Panel panelEncabezado = new Panel(encabezado);
+		panelEncabezado.setWidth("100%");
+		
+		postContainer = new HorizontalLayout(contenido);
+		postContainer.setSizeFull();
+		postContainer.setComponentAlignment(contenido, Alignment.MIDDLE_CENTER);
+		
+		Panel panelContenido = new Panel(postContainer);
+		panelContenido.setWidth("100%");
+		
+		botones = new HorizontalLayout();
+		botones.setSizeFull();
+		
+		Panel panelBotones = new Panel(botones);
+		panelBotones.setWidth("100%");
+		
+		encuadre = new VerticalLayout(panelEncabezado,panelContenido,panelBotones);
+		encuadre.setSizeFull();
+		
+		principal = new Panel(encuadre);
+		principal.setWidth("100%");
 		
 		configureComponents();
 	}

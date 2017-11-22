@@ -32,6 +32,11 @@ public class InicioView extends HorizontalLayout implements View{
 	 FormPost formPost;
 	 PostService service;
 	 
+	 VerticalLayout window;
+	 HorizontalLayout actions;
+	 VerticalLayout postsWindow;
+	 
+	 
 	 ArrayList<PostView> posts;
 	
 	public InicioView(Usuario usr){
@@ -106,33 +111,24 @@ public class InicioView extends HorizontalLayout implements View{
 //	    			}
 //	            }
 //	        });
-	        refreshPosts();
 	    }
 
 	    private void buildLayout() {
 	    	
-	        HorizontalLayout actions = new HorizontalLayout(filter, crearPost, borrarPost);
+	        actions = new HorizontalLayout(filter, crearPost, borrarPost);
 	        actions.setWidth("100%");
 	        filter.setWidth("100%");
 	        actions.setExpandRatio(filter, 1);
 
-	        VerticalLayout left = new VerticalLayout(actions);
-	       // postsList.setSizeFull();
-	        //left.setExpandRatio(postList,1);
+	        window = new VerticalLayout(actions);
+	        window.setSizeFull();
 	        
-	        for(PostView view : posts){
-	        	
-	        	System.out.println("creo los posts");
-	        	
-	        	left.addComponent(view);
-	        }
+	        refreshPosts();
 	        
-	        left.setSizeFull();
-	        
-	        this.addComponent(left);
+	        this.addComponent(window);
 	        this.addComponent(formPost);
 	        this.setSizeFull();
-	        this.setExpandRatio(left, 1);
+	        this.setExpandRatio(window, 1);
 	    }
 
 	    void refreshPosts() {
@@ -143,15 +139,23 @@ public class InicioView extends HorizontalLayout implements View{
 //	        postsList.setContainerDataSource(new BeanItemContainer<Post>(
 //	                Post.class, service.findAll(stringFilter)));
 	    	
-	    	posts = new ArrayList<>();
+	    	
+	    	if (window.getComponentCount()>1)
+	    	
+	    	window.removeComponent(window.getComponent(1));
+	    	
+	    	postsWindow = new VerticalLayout();
 	    	
 	    	for(Post p : service.findAll(stringFilter)){
 	    		
 	    		PostView view = new PostView(p);
-	    		posts.add(view);
-	    		
-	    		System.out.println("entra");
+	    		postsWindow.addComponent(view.principal);
 	    	}
+	    	
+	    	window.addComponent(postsWindow);
+	    	
+	    	window.setExpandRatio(postsWindow, 1);
+	    	
 	        formPost.setVisible(false);
 	    }
 
