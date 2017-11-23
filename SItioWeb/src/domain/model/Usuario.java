@@ -20,6 +20,7 @@ public class Usuario implements Serializable, Cloneable{
 	@Id
 	@GeneratedValue
 	private Long id;
+	
 	private String CUIT_CUIL;
 	private String userName;
 	private String e_mail;
@@ -27,8 +28,11 @@ public class Usuario implements Serializable, Cloneable{
 	private int prestigio;
 	private int puntos;
 	
-	@OneToMany(fetch = FetchType.EAGER,mappedBy = "usr", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "usr", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Post> posts = new ArrayList<Post>();
+	
+	@OneToMany(fetch = FetchType.LAZY ,mappedBy = "usr", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Voto> votos = new ArrayList<Voto>();
 	
 	public List<Post> getPosts(){
 		return posts;

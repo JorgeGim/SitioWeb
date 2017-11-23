@@ -1,13 +1,17 @@
 package domain.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.apache.commons.beanutils.BeanUtils;
 
@@ -24,6 +28,12 @@ public class Post implements Serializable, Cloneable
 	private int cantMeGusta;
 	private int cantNoMeGusta;
 	
+	@ManyToOne
+	private Usuario usr;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Voto> votos = new ArrayList<Voto>();
+	
 	public int getCantMeGusta() {
 		return cantMeGusta;
 	}
@@ -39,9 +49,6 @@ public class Post implements Serializable, Cloneable
 	public void setCantNoMeGusta(int cantNoMeGusta) {
 		this.cantNoMeGusta = cantNoMeGusta;
 	}
-
-	@ManyToOne
-	private Usuario usr;
 	
 	public Usuario getUsr() {
 		return usr;
