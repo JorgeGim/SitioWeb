@@ -2,10 +2,13 @@ package domain.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
@@ -42,6 +45,10 @@ public class Voto implements Serializable, Cloneable{
 	public void dislike() {
 		this.voto = -1;
 	}
+	
+	public void disVotar() { 
+		this.voto = 0;
+	}
 
 	public Post getPost() {
 		return post;
@@ -57,5 +64,22 @@ public class Voto implements Serializable, Cloneable{
 
 	public void setUsr(Usuario usr) {
 		this.usr = usr;
+	}
+	
+	@Override
+	public boolean equals(Object b){
+		
+		Voto v = (Voto) b;
+		
+		if(this.post.getId()==v.post.getId() && this.usr.getId()==v.usr.getId()){
+			
+			System.out.println("compara true!");
+			
+			return true;
+		}
+		
+		System.out.println("compara false!");
+		
+		return false;
 	}
 }

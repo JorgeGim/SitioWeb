@@ -3,7 +3,9 @@ package domain.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -29,33 +31,72 @@ public class Post implements Serializable, Cloneable
 	private int cantNoMeGusta;
 	
 	@ManyToOne
-	private Usuario usr;
+	private Usuario usuario;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Voto> votos = new ArrayList<Voto>();
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Voto> votos = new HashSet<Voto>();
 	
+	
+	public Set<Voto> getVotos() {
+		return votos;
+	}
+
+	public void setVotos(Set<Voto> votos) {
+		this.votos = votos;
+	}
+	
+	public boolean votar(Voto v){
+		
+		boolean ret = this.votos.add(v);
+		
+		calcularMeGusta();
+		calcularNoMeGusta();
+		
+		return ret;
+	}
+
 	public int getCantMeGusta() {
+		
+		calcularMeGusta();
 		return cantMeGusta;
 	}
 
-	public void setCantMeGusta(int cantMeGusta) {
-		this.cantMeGusta = cantMeGusta;
-	}
-
 	public int getCantNoMeGusta() {
+		
+		calcularNoMeGusta();
 		return cantNoMeGusta;
 	}
-
-	public void setCantNoMeGusta(int cantNoMeGusta) {
-		this.cantNoMeGusta = cantNoMeGusta;
+	
+	public void calcularMeGusta() {
+		
+		int meGustas = 0;
+		
+		for(Voto v : votos){
+			
+			if(v.getVoto()>0) meGustas++;
+		}
+		
+		cantMeGusta = meGustas;
 	}
 	
-	public Usuario getUsr() {
-		return usr;
+	public void calcularNoMeGusta() {
+		
+		int noMeGustas = 0;
+		
+		for(Voto v : votos){
+			
+			if(v.getVoto()<0) noMeGustas++;
+		}
+		
+		cantNoMeGusta = noMeGustas;
+	}
+	
+	public Usuario getUsuario() {
+		return usuario;
 	}
 	
 	public void setUsuario(Usuario usr) {
-		this.usr = usr;
+		this.usuario = usr;
 	}
 
 	public Date getFecha() {
@@ -93,7 +134,7 @@ public class Post implements Serializable, Cloneable
     
     @Override
     public String toString() {
-        return "Post{" + "id=" + id + ", userName=" + usr.getUserName()
+        return "Post{" + "id=" + id + ", userName=" + usuario.getUserName()
                 + ", fecha=" + fecha.toString() + ", Contenido=" + Contenido + '}';
     }
 }

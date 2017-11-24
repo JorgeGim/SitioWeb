@@ -2,7 +2,9 @@ package domain.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -28,12 +30,33 @@ public class Usuario implements Serializable, Cloneable{
 	private int prestigio;
 	private int puntos;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "usr", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Post> posts = new ArrayList<Post>();
 	
-	@OneToMany(fetch = FetchType.LAZY ,mappedBy = "usr", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Voto> votos = new ArrayList<Voto>();
+	@OneToMany(fetch = FetchType.EAGER ,mappedBy = "usr", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Voto> votos = new HashSet<Voto>();
 	
+	public Set<Voto> getVotos() {
+		return votos;
+	}
+
+	public void setVotos(Set<Voto> votos) {
+		this.votos = votos;
+	}
+	
+	public boolean addVoto(Voto v){
+		
+		return votos.add(v);
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
+
 	public List<Post> getPosts(){
 		return posts;
 	}

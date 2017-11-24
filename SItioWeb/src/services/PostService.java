@@ -13,8 +13,10 @@ import org.apache.commons.beanutils.BeanUtils;
 
 import daos.PostDAO;
 import daos.UsuarioDAO;
+import daos.VotoDAO;
 import domain.model.Post;
 import domain.model.Usuario;
+import domain.model.Voto;
 
 public class PostService {	
 
@@ -119,18 +121,73 @@ public class PostService {
     	//else System.out.println("Usuario incorrecto! - su Usuario es: "+ usr + " y el del post es: " + post.getUsr().toString());
     }
 
-	public void incrementarMeGusta(Post post) {
+	public void incrementarMeGusta(Post post, Usuario usr) {
 		
-		int total = post.getCantMeGusta() + 1;
-		post.setCantMeGusta(total);
-		PostDAO.actualizarMeGustas(post, total);
+		Voto v = new Voto();
+		
+		Post p = posts.get(post.getId());
+		
+		v.like();
+		v.setPost(p);
+		v.setUsr(usr);
+		
+		Voto flag = null;
+		
+		for(Voto vote : p.getVotos()){
+			
+			if(vote.equals(v)){
+				
+				flag = vote;
+			}
+		}
+		
+		if(flag!=null){
+			
+			if(flag.getVoto()==v.getVoto())	v.disVotar();
+			
+			v.setId(flag.getId());
+			VotoDAO.actualizar(v);
+		}
+		
+		else{
+			p.votar(v);
+			usr.addVoto(v); 
+			VotoDAO.guardar(v);
+		}
 	}
 
-	public void incrementarNoMeGusta(Post post) {
+	public void incrementarNoMeGusta(Post post, Usuario usr) {
 		
-		int total = post.getCantNoMeGusta() + 1;
-		post.setCantNoMeGusta(total);
-		PostDAO.actualizarNoMeGustas(post, total);
+		Voto v = new Voto();
 		
+		Post p = posts.get(post.getId());
+		
+		v.dislike();
+		v.setPost(p);
+		v.setUsr(usr);
+		
+		Voto flag = null;
+		
+		for(Voto vote : p.getVotos()){
+			
+			if(vote.equals(v)){
+				
+				flag = vote;
+			}
+		}
+		
+		if(flag!=null){
+			
+			if(flag.getVoto()==v.getVoto())	v.disVotar();
+			
+			v.setId(flag.getId());
+			VotoDAO.actualizar(v);
+		}
+		
+		else{
+			p.votar(v);
+			usr.addVoto(v); 
+			VotoDAO.guardar(v);
+		}
 	}
 }

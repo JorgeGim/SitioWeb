@@ -22,6 +22,19 @@ public abstract class DAO<T> {
 		System.out.println("Guardado");
 	}
 	
+	public static <T> void actualizar(T t){
+		
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		
+		entityManager.merge(t);
+		
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		
+		System.out.println("Actualizado");
+	}
+	
 	public static <T> void eliminar(T t){
 		
 		EntityManager entityManager = entityManagerFactory.createEntityManager();

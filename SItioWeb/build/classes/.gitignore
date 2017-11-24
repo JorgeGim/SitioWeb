@@ -1,2 +1,6 @@
 
 /domain/
+/services/
+/views/
+/daos/
+/META-INF/

@@ -78,7 +78,7 @@ public class InicioView extends HorizontalLayout implements View{
 
 				@Override
 				public void buttonClick(ClickEvent event) {
-					postService.incrementarMeGusta((Post) postsList.getSelectedRow());
+					postService.incrementarMeGusta((Post) postsList.getSelectedRow(),usuario);
 					refreshPosts();
 				}
 	        	
@@ -88,7 +88,7 @@ public class InicioView extends HorizontalLayout implements View{
 
 				@Override
 				public void buttonClick(ClickEvent event) {
-					postService.incrementarNoMeGusta((Post) postsList.getSelectedRow());
+					postService.incrementarNoMeGusta((Post) postsList.getSelectedRow(), usuario);
 					refreshPosts();
 					
 				}
