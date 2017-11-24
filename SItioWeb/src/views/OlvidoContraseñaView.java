@@ -42,7 +42,7 @@ public class OlvidoContraseñaView extends VerticalLayout implements View {
 		
 		FormLayout formLogin = new FormLayout();
 		
-		email = new TextField("e-mail:");
+		email = new TextField("email:");
 		email.setIcon(FontAwesome.ENVELOPE);
 		email.setRequired(true);
 		formLogin.addComponent(email);
@@ -86,13 +86,20 @@ public class OlvidoContraseñaView extends VerticalLayout implements View {
 		
 		bttVolver.addStyleName(ValoTheme.BUTTON_FRIENDLY);
 	
-		Link link = new Link("Ir a Outlook", new ExternalResource("https://www.outlook.com"));
-		link.setTargetName("_blank");
-		formLogin.addComponent(link);
+		Link outlookLink = new Link("Ir a Outlook", new ExternalResource("https://www.outlook.com"));
+		outlookLink.setTargetName("_blank");
+		//formLogin.addComponent(outlookLink);
 		
-		HorizontalLayout acciones = new HorizontalLayout(link, bttEnviarMail, bttVolver);
+		Link gmailLink = new Link("Ir a Gmail", new ExternalResource("https://www.gmail.com"));
+		gmailLink.setTargetName("_blank");
+		
+		HorizontalLayout acciones = new HorizontalLayout(bttEnviarMail, bttVolver);
 		acciones.setSpacing(true);
 		formLogin.addComponent(acciones);
+		
+		VerticalLayout acciones2 = new VerticalLayout(outlookLink, gmailLink);
+		acciones2.setSpacing(true);
+		formLogin.addComponent(acciones2);
 		
 		formLogin.setSizeUndefined();
 		formLogin.setMargin(true);
