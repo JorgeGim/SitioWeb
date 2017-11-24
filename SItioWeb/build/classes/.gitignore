@@ -1,6 +1,7 @@
 
+/.gitignore
+/META-INF/
+/daos/
 /domain/
 /services/
 /views/
-/daos/
-/META-INF/

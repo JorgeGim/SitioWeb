@@ -4,6 +4,7 @@ import com.vaadin.navigator.View;
 
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -11,6 +12,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Link;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
@@ -65,11 +67,8 @@ public class OlvidoContraseñaView extends VerticalLayout implements View {
 				
 				if(envioMail){
 					Notification.show("Email enviado correctamente");
-					getUI().getNavigator().navigateTo(LoginView.NAME);
 				}
-					
 			}
-			
 		});
 		
 		bttEnviarMail.addStyleName(ValoTheme.BUTTON_PRIMARY);
@@ -86,9 +85,12 @@ public class OlvidoContraseñaView extends VerticalLayout implements View {
 		});
 		
 		bttVolver.addStyleName(ValoTheme.BUTTON_FRIENDLY);
+	
+		Link link = new Link("Ir a Outlook", new ExternalResource("https://www.outlook.com"));
+		link.setTargetName("_blank");
+		formLogin.addComponent(link);
 		
-		formLogin.addComponent(email);
-		HorizontalLayout acciones = new HorizontalLayout(bttEnviarMail, bttVolver);
+		HorizontalLayout acciones = new HorizontalLayout(link, bttEnviarMail, bttVolver);
 		acciones.setSpacing(true);
 		formLogin.addComponent(acciones);
 		
