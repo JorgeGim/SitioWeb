@@ -10,6 +10,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
@@ -35,7 +36,7 @@ public class OlvidoContraseñaView extends VerticalLayout implements View {
 		panel.setSizeUndefined();
 		addComponent(panel);
 		setSizeFull();
-		addStyleName("fondoOlvidoContraseña");
+		addStyleName("fondoOlvido");
 		
 		FormLayout formLogin = new FormLayout();
 		
@@ -87,8 +88,9 @@ public class OlvidoContraseñaView extends VerticalLayout implements View {
 		bttVolver.addStyleName(ValoTheme.BUTTON_FRIENDLY);
 		
 		formLogin.addComponent(email);
-		formLogin.addComponent(bttEnviarMail);
-		formLogin.addComponent(bttVolver);
+		HorizontalLayout acciones = new HorizontalLayout(bttEnviarMail, bttVolver);
+		acciones.setSpacing(true);
+		formLogin.addComponent(acciones);
 		
 		formLogin.setSizeUndefined();
 		formLogin.setMargin(true);

@@ -143,7 +143,7 @@ public class PostService {
 		
 		if(flag!=null){
 			
-			if(flag.getVoto()==v.getVoto())	v.disVotar();
+			if(flag.getVoto() == v.getVoto())	v.disVotar();
 			
 			v.setId(flag.getId());
 			VotoDAO.actualizar(v);
@@ -176,7 +176,7 @@ public class PostService {
 			}
 		}
 		
-		if(flag!=null){
+		if(flag != null){
 			
 			if(flag.getVoto()==v.getVoto())	v.disVotar();
 			

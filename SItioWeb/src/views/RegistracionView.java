@@ -11,6 +11,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
@@ -97,7 +98,22 @@ public class RegistracionView extends VerticalLayout implements View{
 		});
 		
 		bttRegistrarse.addStyleName(ValoTheme.BUTTON_PRIMARY);
-		formLogin.addComponent(bttRegistrarse);
+		
+		Button bttCancelar = new Button("Cancelar");
+		bttCancelar.addClickListener(new ClickListener(){
+			
+			@Override
+			public void buttonClick(ClickEvent event) {
+				
+				getUI().getNavigator().navigateTo(LoginView.NAME);
+			}
+		});
+		
+		bttCancelar.addStyleName(ValoTheme.BUTTON_PRIMARY);
+		
+		HorizontalLayout acciones = new HorizontalLayout(bttRegistrarse, bttCancelar);
+		acciones.setSpacing(true);
+		formLogin.addComponent(acciones);
 		
 		formLogin.setSizeUndefined();
 		formLogin.setMargin(true);
