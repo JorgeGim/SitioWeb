@@ -7,9 +7,12 @@ import domain.model.Usuario;
 public class UsuarioService {
 	
 	Espectador specter;
+	UsuarioDAO udao;
 	
 	public UsuarioService(Espectador e){
 		
+		
+		udao = new UsuarioDAO();
 		specter = e;
 	}
 	
@@ -21,12 +24,12 @@ public class UsuarioService {
     }
     
     public void delete(Usuario value) {
-       UsuarioDAO.eliminar(value);
+       udao.eliminar(value);
     }
     
     public Usuario getUsuario(String username,String contraseña){
     	
-    	Usuario usr = UsuarioDAO.buscar(username);
+    	Usuario usr = udao.buscar(username);
     	
     	if(usr==null){
     		
@@ -51,7 +54,7 @@ public class UsuarioService {
         
     	if(ChequearNombre(entry.getUserName())) {
     		
-    		UsuarioDAO.guardar(entry);
+    		udao.guardar(entry);
     		
     		return true;
     	}
@@ -66,7 +69,7 @@ public class UsuarioService {
     
     private boolean ChequearNombre(String userName) {
 
-    	if(UsuarioDAO.buscar(userName)==null) return true;
+    	if(udao.buscar(userName)==null) return true;
     	
     	else return false;
 	}

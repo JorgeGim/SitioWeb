@@ -9,10 +9,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.beanutils.BeanUtils;
 
 import daos.PostDAO;
-import daos.UsuarioDAO;
 import daos.VotoDAO;
 import domain.model.Post;
 import domain.model.Usuario;
@@ -21,25 +19,26 @@ import domain.model.Voto;
 public class PostService {	
 
 	private HashMap<Long, Post> posts;
-    private long nextId;
+	private PostDAO pdao;
+	private VotoDAO vdao;
 		
 	public PostService(){
+		
+		pdao = new PostDAO();
 
 		refreshPosts();
+		
 	}
 	
 	public void refreshPosts(){
 		
 		posts = new HashMap<Long, Post>();
-		nextId = 0;
 		
-		List<Post> listaPosts =  PostDAO.traer();
+		List<Post> listaPosts =  pdao.traer();
 		
 		for(Post p : listaPosts){
 			
 			posts.put(p.getId(), p);
-			
-			if(p.getId()>=nextId) nextId = p.getId() + 1;
 		}
 	}
 	
@@ -79,21 +78,12 @@ public class PostService {
     }
     
     public void delete(Post value) {
-        posts.remove(value.getId());
-        PostDAO.eliminar(value);
-        PostDAO.eliminar(value);
-    }
-    
-    public void save(Post entry) {
-        if (entry.getId() == null) {
-            entry.setId(nextId++);
-        }
-        try {
-            entry = (Post) BeanUtils.cloneBean(entry);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-        posts.put(entry.getId(), entry);
+    	
+    	System.out.println(value.getId());
+    	
+        pdao.eliminar(posts.get(value.getId()));
+        
+        refreshPosts();
     }
     
     public void createPost(Usuario usr, String cont){
@@ -106,9 +96,9 @@ public class PostService {
     	
     	usr.addPost(post);
     	
-    	PostDAO.guardar(post);
+    	pdao.guardar(post);
     	
-     	save(post);
+     	refreshPosts();
     }
     
     public void suprPost(Usuario usr, Post post){
@@ -146,13 +136,13 @@ public class PostService {
 			if(flag.getVoto() == v.getVoto())	v.disVotar();
 			
 			v.setId(flag.getId());
-			VotoDAO.actualizar(v);
+			vdao.actualizar(v);
 		}
 		
 		else{
 			p.votar(v);
 			usr.addVoto(v); 
-			VotoDAO.guardar(v);
+			vdao.guardar(v);
 		}
 	}
 
@@ -181,13 +171,13 @@ public class PostService {
 			if(flag.getVoto()==v.getVoto())	v.disVotar();
 			
 			v.setId(flag.getId());
-			VotoDAO.actualizar(v);
+			vdao.actualizar(v);
 		}
 		
 		else{
 			p.votar(v);
 			usr.addVoto(v); 
-			VotoDAO.guardar(v);
+			vdao.guardar(v);
 		}
 	}
 }

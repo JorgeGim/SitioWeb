@@ -31,8 +31,11 @@ public class OlvidoContraseñaView extends VerticalLayout implements View {
 	private static final long serialVersionUID = 1L;
 	public static final String NAME = "OlvidoContraseña";
 	TextField email;
+	UsuarioDAO udao;
 	
 	public OlvidoContraseñaView() {
+		
+		udao = new UsuarioDAO();
 		
 		Panel panel = new Panel("Por favor, ingrese su dirección de email!");
 		panel.setSizeUndefined();
@@ -53,7 +56,7 @@ public class OlvidoContraseñaView extends VerticalLayout implements View {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				
-				Usuario usuario = UsuarioDAO.buscarPorEmail(email.getValue());
+				Usuario usuario = udao.buscarPorEmail(email.getValue());
 				String contraseña = usuario.getPassword();
 				
 				String destinatario [] = {email.getValue()};

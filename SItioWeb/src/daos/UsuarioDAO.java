@@ -1,14 +1,15 @@
 package daos;
 
-import javax.persistence.EntityManager;
-
 import domain.model.Usuario;
 
 public class UsuarioDAO extends DAO<Usuario> {
 	
-	public static Usuario buscar(String nombre){
+	public UsuarioDAO() {
+		super();
+	}
+
+	public Usuario buscar(String nombre){
 		
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
 		
 		Usuario result;
@@ -23,14 +24,13 @@ public class UsuarioDAO extends DAO<Usuario> {
 		}
 		
 		entityManager.getTransaction().commit();
-		entityManager.close();
+//		entityManager.close();
 		
 		return result;
 	}
 	
-	public static Usuario buscarPorEmail(String email){
+	public Usuario buscarPorEmail(String email){
 		
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
 		
 		Usuario result;
@@ -45,7 +45,7 @@ public class UsuarioDAO extends DAO<Usuario> {
 		}
 		
 		entityManager.getTransaction().commit();
-		entityManager.close();
+//		entityManager.close();
 		
 		return result;
 	}
