@@ -10,7 +10,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
+
 import daos.PostDAO;
+import daos.UsuarioDAO;
 import daos.VotoDAO;
 import domain.model.Post;
 import domain.model.Usuario;
@@ -21,13 +23,15 @@ public class PostService {
 	private HashMap<Long, Post> posts;
 	private PostDAO pdao;
 	private VotoDAO vdao;
+	private UsuarioDAO udao;
 		
 	public PostService(){
 		
 		pdao = new PostDAO();
+		vdao = new VotoDAO();
+		udao = new UsuarioDAO();
 
 		refreshPosts();
-		
 	}
 	
 	public void refreshPosts(){
@@ -121,29 +125,7 @@ public class PostService {
 		v.setPost(p);
 		v.setUsr(usr);
 		
-		Voto flag = null;
-		
-		for(Voto vote : p.getVotos()){
-			
-			if(vote.equals(v)){
-				
-				flag = vote;
-			}
-		}
-		
-		if(flag!=null){
-			
-			if(flag.getVoto() == v.getVoto())	v.disVotar();
-			
-			v.setId(flag.getId());
-			vdao.actualizar(v);
-		}
-		
-		else{
-			p.votar(v);
-			usr.addVoto(v); 
-			vdao.guardar(v);
-		}
+		votar(v);
 	}
 
 	public void incrementarNoMeGusta(Post post, Usuario usr) {
@@ -156,28 +138,41 @@ public class PostService {
 		v.setPost(p);
 		v.setUsr(usr);
 		
+		votar(v);
+	}
+	
+	private void votar(Voto v){
+		
 		Voto flag = null;
 		
-		for(Voto vote : p.getVotos()){
+		for(Voto vote : v.getPost().getVotos()){
 			
 			if(vote.equals(v)){
 				
 				flag = vote;
+				System.out.println("ya votado");
 			}
 		}
 		
 		if(flag != null){
 			
-			if(flag.getVoto()==v.getVoto())	v.disVotar();
+			if(flag.getVoto()==v.getVoto())	flag.disVotar();
+			else{
+				
+				if(v.getVoto()>0) flag.like();
+				else flag.dislike();
+			}
 			
 			v.setId(flag.getId());
+			
 			vdao.actualizar(v);
 		}
-		
 		else{
-			p.votar(v);
-			usr.addVoto(v); 
-			vdao.guardar(v);
+			v.getPost().addVoto(v);
+			v.getUsr().addVoto(v);
+			pdao.actualizar(v.getPost());
 		}
+		
+		refreshPosts();
 	}
 }
