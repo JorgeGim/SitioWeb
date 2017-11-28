@@ -168,7 +168,7 @@ public class PostService {
 			vdao.actualizar(v);
 		}
 		else{
-			v.getPost().addVoto(v);
+			v.getPost().votar(v);
 			v.getUsr().addVoto(v);
 			pdao.actualizar(v.getPost());
 		}
